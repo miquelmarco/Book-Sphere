@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./payments.css">
+    <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
+    <title>Payments EasyPay</title>
+</head>
+
+<body>
+    <header>
+    </header>
+    <main id="app">
+        <div class="d-flex flex-column justify-content-start align-items-start">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <h1 class="text-center fs-3">Welcome to EasyPay</h1>
+                <h2 class="text-center  fs-3">Enter your card data</h2>
+                <form class="formContainer d-flex justify-content-center align-items-center m-4">
+                    <fieldset class="d-flex flex-column justify-content-center align-items-center gap-3">
+                        <legend class="text-center fs-5">All fields are obligatory</legend>
+                        <legend class="text-center fs-3">Amount to pay: $ {{cartTotalFromStorage.toFixed(2)}} USD
+                        </legend>
+                        <label class="text-center" for="number">Enter your card number (Must be separated by - and no
+                            spaces)</label>
+                        <input v-model="paymentData.number" type="text" id="number">
+                        <label for="cvv">Enter card cvv</label>
+                        <input v-model="paymentData.cvv" type="number" name="cvv" id="cvv">
+                        <!-- <label for="amount">Amount to pay</label>
+                            <input v-model="paymentData.amount" type="number" value="cartTotalFromStorage" name="amount" id="amount"> -->
+                        <label for="description">Enter Description</label>
+                        <textarea v-model="paymentData.description" name="description" id="description" cols="30"
+                            rows="10"></textarea>
+                        <button @click.prevent="makePayment()" class="btn btn-primary">Make Payment</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./payments.js"></script>
+</body>
+
+</html>

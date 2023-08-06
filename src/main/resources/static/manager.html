@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager</title>
+  <link rel="stylesheet" href="./manager.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100&family=M+PLUS+1p:wght@500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <div id="app">
+    <header class="header-container">
+
+      <section class="headerUno custom-header">
+        <nav class="left-menu d-flex justify-content-evenly h-25">
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="./pages/events.html">EVENTS</a>
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="./pages/services.html">SERVICES</a>
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="./pages/bookShop.html">BOOKSHOP</a>
+        </nav>
+        <div class="containerLogo d-flex flex-column justify-content-center align-items-center">
+          <img src="./assets/images/logoHeader.png" alt="logoHeader" class="logoHeader">
+          <h3 id="admin_panel_h3">Admin panel</h3>
+        </div>
+        <nav class="right-menu d-flex justify-content-evenly h-25">
+          <a class="text-black fw-bolder text-decoration-none nav-link text-uppercase" >{{clients.firstName}}</a>
+          <!-- <img src="./assets/images/User_font_awesome.svg" id="user_img" alt=""><img src="./assets/images/key-svgrepo-com.svg" id="admin_img" alt=""> -->
+          <!-- <a class="text-black nav-link" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512">
+              <style>
+                svg {
+                  fill: #000000
+                }
+              </style>
+              <path
+                d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+            </svg>
+          </a> -->
+          <a class="btn text-black fw-bold d-flex justify-content-center align-items-center button-29  text-uppercase"
+          @click.prevent="logOut">Sign Out</a>
+        </nav>
+
+      </section>
+
+      <section class="headerDos">
+        <nav class="containerHeader navbar col-12 navbar-text">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <img src="./assets/images/logoHeader.png" alt="Logo" width="100" height="100"
+                class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+              aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="material-symbols-outlined">
+                apps
+              </span>
+            </button>
+            <div class="collapse navbar-collapse flex-grow-0 gap-5" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="./pages/events.html">EVENTS</a>
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="./pages/services.html">SERVICES</a>
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="./pages/bookShop.html">BOOKSHOP</a>
+                <a class="btn text-black fw-bold d-flex justify-content-center align-items-center button-29  text-uppercase"
+                @click.prevent="logOut">Sign Out</a>
+                <!-- <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="#">LOGIN</a> -->
+                <!-- <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="#">REGISTER</a> -->
+                <!-- <a class="text-black text-center nav-link" href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512">
+                    <path
+                      d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                  </svg>
+                </a> -->
+              </div>
+            </div>
+          </div>
+        </nav>
+      </section>
+
+    </header>
+    <main>
+      <div id="btn_container">
+        <button class="main_btn" @click="updateProperty('Add new Book')" id="book_btn">Add new Book</button>
+        <button class="main_btn" @click="updateProperty('Add new featured author')" id="author_btn">Add new featured
+          author</button>
+        <button class="main_btn" @click="updateProperty('Add new event')" id="event_btn">Add new event</button>
+        <button class="main_btn" @click="updateProperty('Add new User')" id="user_btn">Add new User</button>
+        <button class="main_btn" @click="updateProperty('Read messages')" id="msg_btn">Read messages</button>
+        <button class="main_btn" @click="updateProperty('Buy Orders')" id="order_btn">Buy Orders</button>
+        <button class="main_btn" @click="updateProperty('Reservations')" id="reservation_btn">Reservations</button>    
+      </div>
+      <div v-if="buttonText==''" id="main_img">
+        <img src="./assets/images/logoFooter.png" id="logo_main" alt="">
+      </div>
+
+      <!--ADD NEW BOOK  -->
+
+      <div id="add_new_book" v-if="buttonText=='Add new Book'">
+        <div id="create_book_container">
+          <h2>Add new book</h2>
+          <form action="" id="form_add_book" @submit.prevent="addBook">
+            <input v-model="bookTitle" type="text" placeholder="Book title">
+            <input v-model="author" type="text" placeholder="Author">
+            <input v-model="isbn" type="text" placeholder="ISBN">
+            <input v-model="category" type="text" placeholder="Category">
+            <input v-model="description" type="text" placeholder="Description">
+            <input v-model="image" type="text" placeholder="Image">
+            <input v-model="price" type="number" placeholder="Price">
+            <input v-model="stock" type="number" placeholder="Stock">
+            <input v-model="discount" type="number" min="1" max="99" placeholder="Discount">
+            <input type="submit" value="Add book" id="add_book_btn">
+            <h3>Number of books added: {{books.length}}</h3>
+          </form>
+        </div>
+        <div id="created_books_table" v-if="buttonText=='Add new Book'">
+          <table id="table_books">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Category</th>
+                <!-- <th>Description</th> -->
+                <th><img src="/assets/images/camera.svg" id="camera" alt=""></th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Discount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="book of books">
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.category }}</td>
+                <!-- <td>{{ book.description }}</td> -->
+                <td><img id="img" :src="book.img" alt="Portada del Libro" ></td>
+                <td>$ {{ book.price }}</td>
+                <td>{{ book.stock }}u</td>
+                <td>% {{ book.discount }}</td>
+                <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteBook(book.id,book.title)"
+                    id="bin"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--ADD NEW FEATURED AUTHOR  -->
+
+      <div id="add_new_author">
+        <div v-if="buttonText=='Add new featured author'" id="create_featured_author_container">
+          <h2>Add new featured author</h2>
+          <form action="" id="form_add_author" @submit.prevent="addFeaturedAuthor">
+            <input v-model="firstNameAuthor" type="text" placeholder="First Name">
+            <input v-model="lastNameAuthor" type="text" placeholder="Last Name">
+            <input v-model="nationalityAuthor" type="text" placeholder="Nationality">
+            <input v-model="genreAuthor" type="text" placeholder="Genre">
+            <input v-model="descriptionAuthor" type="text" placeholder="Description">
+            <input v-model="imageAuthor" type="text" placeholder="Image">
+            <input type="submit" value="Add author" id="add_author_btn">
+            <h3>Total featured authors: {{authors.length}}</h3>
+          </form>
+        </div>
+        <div id="created_books_table" v-if="buttonText=='Add new featured author'">
+          <table>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Nationality</th>
+                <!-- <th>Description</th> -->
+                <th>Genre</th>
+                <th><img src="/assets/images/camera.svg" id="camera" alt=""></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="author of authors">
+
+                <td>{{ author.firstName }}</td>
+                <td>{{ author.lastName }}</td>
+                <td>{{ author.nationality }}</td>
+                <!-- <td>{{ author.description }}</td> -->
+                <td>{{ author.genre }}</td>
+                <td><img id="img" :src="author.img" alt="Portada del Libro"></td>
+                <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteAuthor(author.id)" id="bin">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--ADD NEW EVENT  -->
+      <div id="add_new_event">
+        <div v-if="buttonText=='Add new event'" id="create_event_container">
+          <h2>Add new event</h2>
+          <form action="" id="form_add_event" @submit.prevent="addEvent">
+            <input v-model="nameEvent" type="text" placeholder="Event name">
+            <input v-model="imageEvent" type="text" placeholder="Image">
+            <input v-model="descriptionEvent" type="text" placeholder="Description">
+            <input v-model="capacityEvent" type="number" placeholder="Capacity">
+            <select v-model="roomEvent" name="room" id="room_select">
+              <option value="ROOMA">Room A</option>
+              <option value="ROOMB">Room B</option>
+            </select>
+            <input v-model="timeEvent" type="time" placeholder="Time">
+            <input v-model="dateEvent" type="date" placeholder="Date">
+            <input type="submit" value="Add event" id="add_event_btn">
+            <h3>Total events added: {{events.length}}</h3>
+          </form>
+        </div>
+        <div id="created_books_table" v-if="buttonText=='Add new event'&& events.length>0">
+          <table>
+            <thead>
+              <tr>
+                <th>Event name</th>
+                <!-- <th>Description</th> -->
+                <th>Capacity</th>
+                <th>Room</th>
+                <th><img id="time" src="./assets/images/2690491.svg" alt=""></th>
+                <th><img src="./assets/images/calendar-335.svg" id="calendar" alt=""></th>
+                <th><img src="/assets/images/camera.svg" id="camera" alt=""></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="event of events">
+                <td>{{ event.name }}</td>
+                <!-- <td>{{ event.description }}</td> -->
+                <td>{{ event.capacity }}</td>
+                <td>{{ event.eventRoom }}</td>
+                <td>{{ event.time }}</td>
+                <td>{{ event.date }}</td>
+                <td><img id="img" :src="event.img" alt="Image"></td>
+                <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteEvent(event.id)" id="bin"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--ADD NEW USER  -->
+      <div id="add_new_user">
+        <div v-if="buttonText=='Add new User'" id="create_user_container">
+          <h2>Add new User</h2>
+          <form action="" id="form_add_account" @submit.prevent="addClient">
+            <input v-model="firstNameAccount" type="text" placeholder="First Name">
+            <input v-model="lastNameAccount" type="text" placeholder="Last Name">
+            <input v-model="emailAccount" type="email" placeholder="E-mail">
+            <input v-model="passwordAccount" type="text" placeholder="Password">
+            <label for="admin">Admin <img src="./assets/images/key-svgrepo-com.svg" alt="" id="key">
+              <input v-model="isAdmin" value="true" type="checkbox" name="admin" id="check_admin"></label>
+            <input type="submit" value="Add account" id="add_user_btn">
+            <h3>Total registered accounts: {{users.length}}</h3>
+          </form>
+        </div>
+        <div id="created_books_table" v-if="buttonText=='Add new User' && users.length>0">
+          <table>
+            <thead>
+              <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>E-mail</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user of users">
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td v-if="user.admin==true"><img src="./assets/images/key-svgrepo-com.svg" id="admin_img" alt=""></td>
+                <td v-else><img src="./assets/images/User_font_awesome.svg" id="user_img" alt=""></td>
+                <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteUser(user.id)" id="bin"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- READ USER MESSAGES -->
+      <div id="read_user_messages" v-if="buttonText=='Read messages'">
+
+            <div id="messages_table" v-if="buttonText=='Read messages' && userMessages.length>0">
+              <table id="msg_table">
+                <thead>
+                  <tr>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="message of userMessages">
+                    <td>{{ message.fullName }}</td>
+                    <td>{{ message.email }}</td>
+                    <td>{{ message.phoneNumber }}</td>
+                    <td>{{ message.message }}</td>
+                    <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteMessage(message.id)" id="bin">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- list responsive -->
+            <ul id="table" v-for="message of userMessages">
+              <li>{{ message.fullName }}</li>
+              <li>{{ message.email }}</li>
+              <li>{{ message.phoneNumber }}</li>
+              <li id="table_msg_li">{{ message.message }}</li>
+              <li class="bin_table"><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteMessage(message.id)" id="bin" ></li>
+            </ul>
+        </div>
+
+          <!-- BUY ORDERS -->
+<div id="read_user_messages" v-if="buttonText=='Buy Orders'">
+  <ul id="order_ul" v-for="order of buyOrders">
+    <li>{{ order.orderNumber }}</li>
+    <li>{{ order.clientName }}</li>
+    <li>{{ order.date }}</li>
+    <li>${{ order.amount.toLocaleString() }}</li>
+    <li  id="status">{{ order.status }} <img @click="showEdit" v-if="showEditStatus==false" id="pencil_edit" src="./assets/images/pencil-square.svg" alt=""> </i><div v-if="showEditStatus==true">
+      <select v-model="orderStatus" name="" id="status_select">
+      <option :value="'PENDING'">PENDING</option>
+      <option :value="'ON_THE_WAY'">ON THE WAY</option>
+      <option :value="'DELIVERED'">DELIVERED</option>
+    </select> <button @click="editStatus(order.id)" id="confirm_btn">Confirm</button></div></li>
+    <li><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteBuyOrder(order.id)" id="bin">
+    </li>
+  </ul>
+</div>
+
+<!-- RESERVATIONS -->
+<div id="read_user_messages" v-if="buttonText=='Reservations'">
+  <div id="messages_table" v-if="buttonText=='Reservations'">
+    <table id="msg_table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Client</th>
+          <th>Date</th>
+          <th>Room</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="reservation of reservations">
+          <td>{{ reservation.id }}</td>
+          <td>{{reservation.client}}</td>
+          <td>{{ reservation.date }}</td>
+          <td>{{ reservation.eventRoom }}</td>
+          <td><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteReservation(reservation.id)" id="bin">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+   <!-- list responsive -->
+   <ul id="table_msg" v-for="reservation of reservations">
+    <li>ID: {{ reservation.id }}</li>
+    <li>CLIENT: {{ reservation.client }}</li>
+    <li>DATE: {{ reservation.date }}</li>
+    <li>ROOM: {{ reservation.eventRoom }}</li>
+    <li class="bin_table"><img src="./assets/images/trash-can-10416.png" alt="" @click="deleteReservation(reservation.id)" id="bin" ></li>
+  </ul>
+</div>
+
+
+    </main>
+    <footer class="footer d-flex flex-wrap align-items-center justify-content-around gap-5">
+      <div class="task text-center">
+        <img src="./assets/images/logoFooter.png" class="logoFooter h-50 w-50" alt="">
+      </div>
+      <div class="text-black">
+        <span class="fw-bold">CONTACT:</span>
+        <br>
+        <br>
+        <h6 class="text-black"><span class="fw-bold text-uppercase">BookSphere Library</span></h6>
+        <h6 class="text-black fw-bold">Telephone: (57-4) 650 38 98</h6>
+        <h6 class="text-black fw-bold">Schedules</h6>
+        <h6 class="text-black fw-bold"><span class="fw-semibold fw-bold">Monday to Thursday from</span>: 7:00 a.m. to
+          12:00 p.m.
+          1:00 pm. to 5:00 p.m.</h6>
+        <h6 class="text-black fw-bold"><span class="fw-semibold fw-bold">Friday from:</span> 7:30 a.m. to 12:30 p.m.
+          1:00 pm. to 4:00 p.m.</h6>
+      </div>
+      <div>
+        <ul class="social">
+          <li class="social-item">
+            <a class="social-link" href="https://www.facebook.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9.19795 21.5H13.198V13.4901H16.8021L17.198 9.50977H13.198V7.5C13.198 6.94772 13.6457 6.5 14.198 6.5H17.198V2.5H14.198C11.4365 2.5 9.19795 4.73858 9.19795 7.5V9.50977H7.19795L6.80206 13.4901H9.19795V21.5Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="social-item">
+            <a class="social-link" href="https://www.twitter.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M8 3C9.10457 3 10 3.89543 10 5V8H16C17.1046 8 18 8.89543 18 10C18 11.1046 17.1046 12 16 12H10V14C10 15.6569 11.3431 17 13 17H16C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21H13C9.13401 21 6 17.866 6 14V5C6 3.89543 6.89543 3 8 3Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="social-item">
+            <a class="social-link" href="https://www.instagram.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z"
+                  fill="currentColor"></path>
+                <path
+                  d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+                  fill="currentColor"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./manager.js"></script>
+
+</html>

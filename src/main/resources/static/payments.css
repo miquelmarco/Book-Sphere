@@ -1,0 +1,35 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* border: solid red 1px; */
+    font-family: 'Bruno Ace SC', cursive;
+    font-weight: 900;
+}
+
+body {
+    background-image: url(./assets/images/Deuda.png);
+    background-size: cover;
+    color: white;
+}
+
+header {
+    min-height: 5vh;
+}
+main {
+    min-height: 90vh;
+}
+
+.formContainer {
+    width: 40rem;
+    height: 35rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+}
+
+textarea {
+    width: 25rem;
+    height: 4rem;
+    resize: none;
+    color: red;
+}

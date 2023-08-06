@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="../assets/style/user.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="shortcut icon" href="../assets/images/logoHeader.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Martel:wght@300&family=Montserrat:wght@300;400&family=Prompt:wght@300&display=swap"
+    rel="stylesheet">
+  <title>USER | BOOKSPHERE</title>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- Modal de carrito de compras -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="../assets/images/logoCorto.png" alt="Logo" width="150" height="50">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="cart-item cartItemPeq m-2 d-flex justify-content-between align-items-center"
+              v-for="item of cart">
+              <img class="cartItemImgPeq" :src="item.img" alt="itemImg">
+              <div class="w-25 titleCartShopping">
+                <span class="item-name">{{item.title}} </span>
+              </div>
+              <div>
+                <span class="item-quantity"> {{item.quantity}} Uds. </span>
+                <span class="item-price"> $ {{multipleItemCalculator(item.quantity,
+                  item.price).toFixed(2)}} USD</span>
+              </div>
+              <button class="btnDelete" @click="deleteItem(item.title)">X</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="total-price d-flex flex-column align-items-center fw-bolder">
+              <p>Discount will be applied on the payment page!</p>
+              <span class="total-label">Total:</span>
+              <span class="total-value">$ {{cartTotal.toFixed(2)}}</span>
+            </div>
+            <button class="btn btn-danger" @click="clearCart()">Clear Cart</button>
+            <button class="button" @click.prevent="goToCart">
+              <span class="text text-black">Go to shopping cart</span>
+              <span class="iconCar"><svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 840 512">
+                  <path
+                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                </svg></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header class="header-container">
+      <section class="headerUno custom-header">
+        <nav class="left-menu d-flex justify-content-evenly h-25">
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="../pages/events.html">EVENTS</a>
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="../pages/services.html">SERVICES</a>
+          <a class="text-black fw-bolder text-decoration-none nav-link" href="../pages/bookShop.html">BOOKSHOP</a>
+        </nav>
+        <div class="containerLogo d-flex justify-content-center align-items-center">
+          <a href="../index.html">
+            <img src="../assets/images/logoHeader.png" alt="logoHeader" class="logoHeader">
+          </a>
+        </div>
+        <div>
+          <nav v-if="clients" class="right-menu d-flex justify-content-evenly h-25">
+            <a class="text-black nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512">
+                <path
+                  d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+              </svg>
+              <div class="bubble" v-if="cart != 0">{{bubbleCounter()}}</div>
+            </a>
+            <a class="text-black fw-bolder text-decoration-none nav-link text-uppercase sel"
+              href="../pages/user.html">{{clients.firstName}}</a>
+            <a class="btn btn-danger text-black fw-bold d-flex justify-content-center align-items-center button-29  text-uppercase"
+              @click.prevent="logOut">Sign Out</a>
+            <!-- <a class="btn btn-danger text-black fw-bold d-flex justify-content-center align-items-center log-out"  @click.prevent="logOut">Sign Out</a> -->
+          </nav>
+          <nav v-else class="right-menu d-flex justify-content-evenly h-25">
+            <a class="text-black nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512">
+                <path
+                  d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+              </svg>
+            </a>
+            <a class="text-black fw-bolder text-decoration-none nav-link" href="#" data-bs-toggle="modal"
+              data-bs-target="#loginModal">LOGIN</a>
+            <a class="text-black fw-bolder text-decoration-none nav-link" href="#" data-bs-toggle="modal"
+              data-bs-target="#registerModal">REGISTER</a>
+          </nav>
+        </div>
+      </section>
+
+      <section class="headerDos">
+        <nav class="containerHeader navbar col-12 navbar-text">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+              <img src="../assets/images/logoHeader.png" alt="Logo" width="100" height="100"
+                class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+              aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="material-symbols-outlined">
+                apps
+              </span>
+            </button>
+            <div class="collapse navbar-collapse flex-grow-0 gap-5" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a v-if="clients" class="text-black text-center fw-bolder text-decoration-none nav-link text-uppercase"
+                  href="../pages/user.html">{{ clients.firstName }}</a>
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link"
+                  href="../pages/events.html">EVENTS</a>
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link"
+                  href="../pages/services.html">SERVICES</a>
+                <a class="text-black text-center fw-bolder text-decoration-none nav-link"
+                  href="../pages/bookShop.html">BOOKSHOP</a>
+                <a class="text-black text-center nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512">
+                    <path
+                      d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                  </svg>
+                  <div class="bubble" v-if="cart != 0">{{bubbleCounter()}}</div>
+                </a>
+              </div>
+              <div>
+                <a v-if="clients"
+                  class="btn btn-danger text-black fw-bold d-flex justify-content-center align-items-center button-29  text-uppercase"
+                  @click.prevent="logOut">Sign Out</a>
+                <div v-else>
+                  <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="#"
+                    data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
+                  <a class="text-black text-center fw-bolder text-decoration-none nav-link" href="#"
+                    data-bs-toggle="modal" data-bs-target="#registerModal">REGISTER</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </section>
+
+    </header>
+
+    <main>
+      <div class="d-flex p-4">
+        <h2 class="text-uppercase text-black fw-bold with-line">
+          PERSONAL INFORMATION
+        </h2>
+        <div class="home__title-line">
+          <div class="home-line"></div>
+        </div>
+      </div>
+      <div class=" d-flex justify-content-center flex-wrap m-5">
+        <div class="user">
+          <svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+              <path class="st0"
+                d="M332.933,213.451c-20.713,17.784-47.559,28.624-76.938,28.624c-29.37,0-56.224-10.84-76.928-28.624
+                  c-54.991,20.952-92.686,66.126-92.686,132.094v98.082c0,0,14.505,19.331,45.864,37.437v-69.339h28.992v83.228
+                  c24.848,9.78,56.243,17.047,94.758,17.047c38.524,0,69.901-7.266,94.767-17.047v-83.228h28.992v69.339
+                  c31.359-18.106,45.864-37.437,45.864-37.437v-98.082C425.618,279.577,387.923,234.403,332.933,213.451z" />
+              <path class="st0" d="M255.996,213.902c49.299,0,89.26-39.96,89.26-89.259V89.269C345.255,39.96,305.294,0,255.996,0
+                  c-49.3,0-89.268,39.96-89.268,89.269v35.374C166.727,173.942,206.696,213.902,255.996,213.902z" />
+            </g>
+          </svg>
+        </div>
+        <section>
+          <div class="d-flex gap-4 flex-wrap">
+            <div>
+              <h5 class="fw-bold text-uppercase">First Name:</h5>
+              <h6 class="fw-bold  text-uppercase">{{clients.firstName}} </h6>
+            </div>
+            <hr>
+            <div>
+              <h5 class="fw-bold text-uppercase">Last Name:</h5>
+              <h6 class="fw-bold text-uppercase">{{clients.lastName}} </h6>
+            </div>
+            <hr>
+          </div>
+          <div class="pt-2">
+            <h5 class="fw-bold text-uppercase">Email:</h5>
+            <h6 class="fw-bold">{{clients.email}} </h6>
+          </div>
+          <hr>
+          <div>
+            <form action="">
+              <h5 class="fw-bold text-uppercase">Shipping address:</h5>
+              <div v-if="editMode">
+                <label for="address">
+                  <input type="text" id="address" name="address" placeholder="Your address" v-model="address">
+                </label>
+                <div class="form-group d-flex align-items-center justify-content-center p-2">
+                  <button class="button-30 fw-bold" @click.prevent="setShippingAddress">CONFIRM INFORMATION</button>
+                </div>
+              </div>
+              <div v-else class="d-flex gap-5 flex-wrap align-items-center">
+                <h6 v-if="shippingAddress" class="fw-bold text-uppercase">{{ shippingAddress }}</h6>
+                <h6 class="fw-bold text-uppercase" v-else>No shipping address provided.</h6>
+                <svg @click.prevent="editShipping" class="edit-icon cursor-pointer" width="20px" height="20px"
+                  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="Edit / Edit_Pencil_01">
+                    <path id="Vector"
+                      d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001"
+                      stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </div>
+              <hr>
+
+            </form>
+          </div>
+
+          <div class="d-flex gap-4 flex-wrap ">
+            <div>
+              <h5 class="fw-bold text-uppercase">Buy orders:</h5>
+              <h6 v-if="buyOrders.length === 0" class="fw-bold text-uppercase">You don't have purchase orders </h6>
+              <div v-else>
+                <div class="p-4 table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-center text-uppercase">Date</th>
+                        <th scope="col" class="text-center text-uppercase">Order Number</th>
+                        <th scope="col" class="text-center text-uppercase">Amount</th>
+                        <th scope="col" class="text-center text-uppercase">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="orders of buyOrders ">
+                        <td class="text-center">{{orders.date}}</td>
+                        <td class="text-center">{{orders.orderNumber}}</td>
+                        <td class="text-center">${{orders.amount.toLocaleString()}} USD</td>
+                        <td class="text-center">{{orders.status}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div>
+              <h5 class="fw-bold text-uppercase ">Reservations:</h5>
+              <h6 class="fw-bold text-uppercase" v-if="reservations.length === 0">You don't have any reservations.</h6>
+              <div v-else>
+                <div class="p-4 table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-center text-uppercase">Date</th>
+                        <th scope="col" class="text-center text-uppercase">Room</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="reservation of reservations ">
+                        <td class="text-center">{{reservation.date}}</td>
+                        <td class="text-center">{{reservation.eventRoom.slice(0,4)}}
+                          {{reservation.eventRoom.slice(4,5)}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="d-flex gap-5 justify-content-center align-items-center" v-if="clients.firstName === 'admin'">
+            <h5 class="fw-bold py-4 text-uppercase">Enter settings</h5>
+            <a href="../manager.html"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 476.342 476.342"
+                xml:space="preserve">
+                <g>
+                  <g>
+                    <path d="M303.879,239.022c-3.509,4.477-7.043,8.93-10.567,13.398c27.325,23.379,48.825,42.081,56.279,49.302
+                     c7.912,7.663,18.85-5.428,10.999-13.035C353.136,281.467,331.427,262.592,303.879,239.022z" />
+                    <path d="M375.986,345.373c-14.396-12.583-50.546-44.188-92.435-80.669c-3.55,4.443-7.149,8.847-10.739,13.249
+                     c41.766,36.379,77.784,67.872,92.18,80.455C373.279,365.649,384.259,352.6,375.986,345.373z" />
+                    <path d="M251.048,303.968c30.401,25.567,54.883,46.245,63.993,54.141c8.312,7.216,19.296-5.834,10.998-13.035
+                     c-9.1-7.886-33.58-28.568-63.977-54.136C258.411,295.299,254.77,299.661,251.048,303.968z" />
+                    <path d="M32.845,154.479c-0.531,0.627-0.919,1.277-1.231,1.927c-2.615,3.268-3.199,8.191,0.878,11.723
+                     c16.483,14.262,50.386,42.569,90.347,75.766c4.083-4.031,8.163-8.066,12.21-12.126c-37.93-31.511-69.83-58.112-85.066-71.145
+                     c4.151-4.913,8.325-9.796,12.502-14.684c11.387,9.504,45.945,38.405,86.145,72.085c3.989-4.078,7.914-8.201,11.867-12.31
+                     c-40.52-33.943-75.446-63.149-86.892-72.704c4.35-5.027,8.691-10.062,13.089-15.043c14.19,11.39,47.756,40.081,87.046,74.012
+                     c3.9-4.139,7.69-8.374,11.547-12.548c-39.387-34.018-73.052-62.805-87.227-74.197c3.001-3.323,5.984-6.654,9.021-9.947
+                     c10.728,8.965,46.639,39.037,87.78,73.699c3.827-4.207,7.727-8.358,11.512-12.606c-41.094-34.624-76.967-64.67-87.618-73.562
+                     c3.413-3.578,6.843-7.125,10.311-10.649c16.234,12.593,49.16,39.7,87.925,71.955c3.74-4.286,7.482-8.574,11.179-12.901
+                     c-39.212-32.628-72.6-60.095-89.573-73.229c-1.32-5.631-9.641-9.765-15.219-4.237c-0.932,0.919-1.836,1.866-2.763,2.788
+                     c-0.109-0.084-0.185-0.178-0.299-0.262c-11.306-7.874-21.899-16.613-32.423-25.489c-0.666-0.561-1.346-0.957-2.031-1.274
+                     c-3.273-2.666-8.378-3.399-12.159,0.462c-24.6,25.142-47.24,51.834-67.806,80.385c-0.518,0.724-0.868,1.462-1.147,2.206
+                     c-1.841,3.222-2.009,7.549,1.251,10.897c9.445,9.714,19.012,19.291,29.198,28.226C34.416,152.626,33.629,153.548,32.845,154.479z
+                      M22.742,116.285c17.882-24.336,37.242-47.35,58.102-69.169c9.016,7.541,18.139,14.919,27.769,21.68
+                     c-21.658,22.519-42.152,46.085-62.383,69.896C38.088,131.547,30.333,123.996,22.742,116.285z" />
+                    <path d="M457.671,323.432c-0.406-0.523-0.889-1.036-1.473-1.519c-22.358-18.321-74.697-62.343-131.226-109.763
+                     c-3.523,4.471-7.048,8.937-10.557,13.421c54.146,45.415,103.773,87.15,124.572,104.253c-23.449,32.484-50.454,61.81-81.11,87.615
+                     c-19.591-16.863-66.877-56.229-119.134-99.624c-3.806,4.239-7.635,8.454-11.535,12.613
+                     c53.453,44.331,101.902,84.624,122.697,102.621c0.665,0.579,1.346,0.979,2.031,1.31c1.355,1.707,3.239,2.874,5.321,3.077
+                     c1.011,0.798,2.27,1.412,3.849,1.681c33.789,5.779,67.675,10.639,101.926,12.528c5.459,0.305,8.942-3.813,9.648-8.054
+                     c0.142-0.65,0.223-1.336,0.218-2.072c-0.294-38.466-4.854-76.449-12.979-114.031C459.514,325.676,458.701,324.365,457.671,323.432
+                     z M376.017,424.28c26.192-22.983,49.86-48.403,70.777-76.297c2.823,15.117,4.905,30.351,6.378,45.641
+                     c-0.646,0.355-1.274,0.777-1.869,1.325c-11.948,11.07-22.963,22.973-33.524,35.363C403.829,428.591,389.91,426.55,376.017,424.28z
+                      M438.405,432.577c5.316-5.967,10.775-11.791,16.422-17.442c0.36,6.307,0.66,12.618,0.812,18.936
+                     C449.881,433.654,444.143,433.136,438.405,432.577z" />
+                    <path
+                      d="M235.786,291.13c3.43-4.555,6.873-9.089,10.306-13.619c3.474-4.58,7.002-9.114,10.567-13.613
+                     c3.529-4.454,7.149-8.831,10.847-13.157c2.082-2.428,4.107-4.891,6.266-7.267c1.315-1.452,2.646-2.895,3.961-4.353
+                     c3.824-4.207,7.652-8.414,11.486-12.616c3.793-4.169,7.566-8.361,11.345-12.54c3.818-4.222,7.611-8.467,11.39-12.725
+                     c8.658-9.76,17.144-19.675,25.415-29.8c1.625-1.991,3.312-3.925,4.921-5.939c31.879,10.641,71.391,11.088,94.313-17.694
+                     c22.982-28.858,20.9-65.831,7.825-98.515c-0.092-0.282-0.188-0.564-0.315-0.818c-0.132-0.317-0.243-0.64-0.376-0.952
+                     c-3.523-8.511-16.184-3.966-14.609,4.156c-5.859,20.269-18.194,39.793-39.607,45.732c-15.809,4.377-34.449,1.242-48.251-7.609
+                     c-10.842-6.952-23.872-19.06-21.993-33.444c2.742-20.908,26.639-31.128,43.955-37.445c2.326-0.848,3.691-2.376,4.301-4.138
+                     c6.465-2.813,6.987-13.947-1.422-14.435c-34.896-2.044-72.041,4.778-97.949,29.915c-22.165,21.505-22.805,51.021-12.608,77.731
+                     c0.858,2.247,1.763,4.479,2.768,6.678c1.163,2.554-14.065,21.345-16.102,24.323c-0.566,0.833-1.181,1.635-1.747,2.46
+                     c-3.24,4.702-6.594,9.318-9.923,13.952c-2.188,3.042-4.288,6.147-6.515,9.163c-1.013,1.371-2.1,2.694-3.121,4.06
+                     c-3.41,4.555-6.893,9.059-10.405,13.536c-2.963,3.79-5.954,7.556-8.991,11.288c-3.583,4.41-7.228,8.772-10.915,13.099
+                     c-1.518,1.785-2.958,3.631-4.497,5.397c-2.554,2.938-5.164,5.825-7.759,8.725c-3.796,4.24-7.632,8.444-11.507,12.611
+                     c-1.805,1.94-3.583,3.9-5.403,5.819c-2.579,2.728-5.25,5.363-7.86,8.055c-3.958,4.082-7.878,8.2-11.913,12.207
+                     c-0.023,0.021-0.063,0.066-0.089,0.086c-2.59,2.621-17.28,19.83-19.911,19.165c-0.165-0.041-0.333-0.071-0.505-0.112
+                     c-30.095-7.449-62.256-2.671-80.752,25.009c-20.045,30.017-20.061,67.781-11.768,101.737c2.003,8.186,12.854,5.662,14.457-1.203
+                     c1.622-0.909,2.879-2.529,3.291-4.977c3.105-18.153,8.846-43.503,28.917-49.973c13.807-4.448,28.068,6.181,36.861,15.595
+                     c11.197,11.979,17.644,29.752,16.184,46.083c-1.978,22.145-18.958,37.795-37.841,47.215c-8.267-0.081-10.46,13.188-1.45,15.117
+                     c0.333,0.071,0.67,0.127,1.003,0.193c0.277,0.081,0.561,0.127,0.858,0.167c34.512,6.967,71.254,2.347,95.497-25.466
+                     c20.898-23.974,18.057-56.203,6.436-83.518c-1.826-4.281-3.841-8.455-6.038-12.446c-0.81-1.468,20.375-24.242,22.505-26.878
+                     c1.539-1.898,3.006-3.874,4.535-5.783c3.552-4.459,7.046-8.953,10.529-13.462c2.283-2.945,4.644-5.835,6.896-8.806
+                     C232.795,295.116,234.288,293.121,235.786,291.13z M202.132,309.649c-6.043,7.587-12.2,15.071-18.456,22.485
+                     c-3.583,4.24-7.097,8.547-10.758,12.721c-2.125,2.422-2.308,5.134-1.389,7.434c-0.3,1.641-0.081,3.438,0.973,5.246
+                     c0.223,0.386,0.426,0.771,0.645,1.157c1.623,2.849,3.151,5.749,4.54,8.704c10.77,22.952,13.713,48.723-2.684,70.492
+                     c-14.287,18.967-38.146,24.268-60.989,23.171c15.267-11.507,26.708-26.918,29.272-47.144c2.829-22.358-6.414-44.148-21.008-60.656
+                     c-12.865-14.559-32.578-23.674-51.917-18.606c-16.082,4.22-25.758,18.307-31.692,33.805c-0.447-17.235,2.537-34.363,10.474-50.201
+                     c14.434-28.808,45.227-31.763,73.146-23.739c2.442,0.7,4.431,0.188,5.911-0.95c0.599-0.462,1.13-0.99,1.551-1.63
+                     c4.959-7.53,14.975-14.122,21.439-20.525c0.731-0.726,1.43-1.487,2.163-2.214c4.055-4.047,8.018-8.175,11.994-12.294
+                     c2.486-2.574,5.04-5.072,7.493-7.672c1.924-2.031,3.76-4.145,5.665-6.195c3.867-4.172,7.731-8.356,11.517-12.604
+                     c4.093-4.593,8.077-9.283,12.063-13.967c3.184-3.74,6.439-7.421,9.549-11.228c0.487-0.597,0.949-1.211,1.435-1.81
+                     c3.077-3.781,6.073-7.627,9.084-11.459c3.514-4.479,6.987-8.98,10.415-13.53c3.296-4.38,6.594-8.757,9.806-13.198
+                     c3.349-4.629,6.594-9.323,9.844-14.013c3.483-5.024,6.927-10.067,10.304-15.158c3.503-5.273,7.007-10.537,10.384-15.876
+                     c1.925-1.841,2.778-4.613,1.193-7.805c-12.929-26.01-15.574-56.83,10.166-76.226c14.143-10.659,30.453-16.681,47.489-19.352
+                     c-14.173,8.63-26.283,20.69-27.532,37.267c-1.503,19.937,11.019,37.679,27.659,47.708c18.875,11.377,41.965,16.541,63.444,9.724
+                     c19.434-6.167,32.534-20.198,41.091-37.288c5.2,22.27,4.291,46.694-11.791,64.165c-21.149,22.978-52.064,21.93-79.485,12.032
+                     c-1.965-0.711-3.778-0.604-5.337-0.01c-2.422-0.487-5.053,0.178-7.054,2.704c-2.863,3.607-5.875,7.056-8.805,10.592
+                     c-7.779,9.364-15.731,18.552-23.856,27.563c-3.813,4.227-7.612,8.465-11.461,12.662c-3.788,4.124-7.566,8.252-11.364,12.375
+                     c-3.845,4.182-7.653,8.415-11.481,12.622c-3.428,3.77-6.886,7.513-10.288,11.329c-0.021,0.03-0.046,0.056-0.071,0.081
+                     c-3.778,4.23-7.357,8.598-10.831,13.03c-3.61,4.601-7.104,9.283-10.547,14.005c-3.359,4.602-6.675,9.232-10.029,13.848
+                     c-3.374,4.642-6.782,9.268-10.295,13.828c-0.312,0.406-0.64,0.797-0.952,1.203C209.266,300.769,205.679,305.191,202.132,309.649z" />
+                  </g>
+                </g>
+              </svg>
+
+            </a>
+          </div>
+
+        </section>
+
+      </div>
+
+    </main>
+    <footer class="footer d-flex flex-wrap align-items-center justify-content-around gap-5">
+      <div class="task text-center">
+        <img src="../assets/images/logoFooter.png" class="logoFooter h-50 w-50" alt="">
+      </div>
+      <div class="text-black">
+        <span class="fw-bold">CONTACT:</span>
+        <br>
+        <br>
+        <h6 class="text-black"><span class="fw-bold text-uppercase">BookSphere Library</span></h6>
+        <h6 class="text-black fw-bold">Telephone: (57-4) 650 38 98</h6>
+        <h6 class="text-black fw-bold">Schedules</h6>
+        <h6 class="text-black fw-bold"><span class="fw-semibold fw-bold">Monday to Thursday from</span>: 7:00 a.m. to
+          12:00 p.m.
+          1:00 pm. to 5:00 p.m.</h6>
+        <h6 class="text-black fw-bold"><span class="fw-semibold fw-bold">Friday from:</span> 7:30 a.m. to 12:30 p.m.
+          1:00 pm. to 4:00 p.m.</h6>
+        <a class="text-black text-center text-uppercase fw-bolder text-decoration-none nav-link "
+          href="../pages/contact.html">
+          Enter here for more information
+        </a>
+
+      </div>
+      <div>
+        <ul class="social">
+          <li class="social-item">
+            <a class="social-link" href="https://www.facebook.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9.19795 21.5H13.198V13.4901H16.8021L17.198 9.50977H13.198V7.5C13.198 6.94772 13.6457 6.5 14.198 6.5H17.198V2.5H14.198C11.4365 2.5 9.19795 4.73858 9.19795 7.5V9.50977H7.19795L6.80206 13.4901H9.19795V21.5Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="social-item">
+            <a class="social-link" href="https://www.twitter.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M8 3C9.10457 3 10 3.89543 10 5V8H16C17.1046 8 18 8.89543 18 10C18 11.1046 17.1046 12 16 12H10V14C10 15.6569 11.3431 17 13 17H16C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21H13C9.13401 21 6 17.866 6 14V5C6 3.89543 6.89543 3 8 3Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="social-item">
+            <a class="social-link" href="https://www.instagram.com">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z"
+                  fill="currentColor"></path>
+                <path
+                  d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+                  fill="currentColor"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                  fill="currentColor"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <script src="../assets/scripts/user.js"></script>
+</body>
+
+</html>
